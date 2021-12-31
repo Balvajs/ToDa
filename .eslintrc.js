@@ -7,14 +7,9 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
     'plugin:prettier/recommended',
-    'prettier/react',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
-  settings: {
-    'import/resolver': {
-      typescript: {},
-    },
-    'import/extensions': ['.ts', '.tsx'],
-  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -25,6 +20,21 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    'import/order': [
+      'warn',
+      {
+        alphabetize: { order: 'asc', caseInsensitive: true },
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+        ],
+        'newlines-between': 'never',
+      },
+    ],
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'no-use-before-define': 'off',
     'import/extensions': [
@@ -43,5 +53,6 @@ module.exports = {
     'consistent-return': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 };
