@@ -32,7 +32,7 @@ module.exports = {
           'sibling',
           'index',
         ],
-        'newlines-between': 'never',
+        'newlines-between': 'always',
       },
     ],
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],

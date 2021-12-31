@@ -8,17 +8,20 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Roboto;
-    font-size: 44px;
-    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: white;
+    background-color: #222;
   }
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GlobalStyle>
+    <>
+      <GlobalStyle />
       <Component {...pageProps} />
-    </GlobalStyle>
+    </>
   );
 }
 

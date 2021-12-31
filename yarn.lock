@@ -531,6 +531,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/parser@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@typescript-eslint/parser@npm:5.8.1"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.8.1
+    "@typescript-eslint/types": 5.8.1
+    "@typescript-eslint/typescript-estree": 5.8.1
+    debug: ^4.3.2
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: bb1702851ff0ade16a50789c517155557ad7e9b8e5e9c4553aad52fedbc8f94acaade1dc5ba12a96b54a13a68dfea13955ab885aad97cf3c526a8b90880bd8a3
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/parser@npm:^4.20.0":
   version: 4.33.0
   resolution: "@typescript-eslint/parser@npm:4.33.0"
@@ -1289,7 +1306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-esnext@npm:^4.1.0":
+"eslint-config-esnext@npm:4.1.0, eslint-config-esnext@npm:^4.1.0":
   version: 4.1.0
   resolution: "eslint-config-esnext@npm:4.1.0"
   dependencies:
@@ -2663,9 +2680,11 @@ __metadata:
     "@types/react-dom": 17.0.11
     "@types/styled-components": 5.1.9
     "@typescript-eslint/eslint-plugin": 5.8.1
+    "@typescript-eslint/parser": 5.8.1
     babel-plugin-styled-components: 2.0.2
     eslint: 7.32.0
     eslint-config-airbnb: 19.0.4
+    eslint-config-esnext: 4.1.0
     eslint-config-next: 11.1.0
     eslint-config-node: 4.1.0
     eslint-config-prettier: 8.3.0
@@ -2680,6 +2699,7 @@ __metadata:
     prettier: 2.5.1
     react: 17.0.2
     react-dom: 17.0.2
+    react-is: 17.0.2
     styled-components: 5.3.3
     typescript: 4.5.2
   languageName: unknown

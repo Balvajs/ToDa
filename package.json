@@ -12,6 +12,7 @@
     "next": "canary",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-is": "17.0.2",
     "styled-components": "5.3.3"
   },
   "devDependencies": {
@@ -20,9 +21,11 @@
     "@types/react-dom": "17.0.11",
     "@types/styled-components": "5.1.9",
     "@typescript-eslint/eslint-plugin": "5.8.1",
+    "@typescript-eslint/parser": "5.8.1",
     "babel-plugin-styled-components": "2.0.2",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "19.0.4",
+    "eslint-config-esnext": "4.1.0",
     "eslint-config-next": "11.1.0",
     "eslint-config-node": "4.1.0",
     "eslint-config-prettier": "8.3.0",
