@@ -5,12 +5,23 @@ import styled from 'styled-components';
 import { device } from '../lib/breakpoints';
 import cover from '../public/cover.webp';
 import i1 from '../public/gallery/1.jpeg';
+import i11 from '../public/gallery/11.jpeg';
+import i12 from '../public/gallery/12.jpeg';
+import i13 from '../public/gallery/13.jpeg';
+import i14 from '../public/gallery/14.jpeg';
+import i15 from '../public/gallery/15.jpeg';
+import i16 from '../public/gallery/16.jpeg';
+import i17 from '../public/gallery/17.jpeg';
+import i18 from '../public/gallery/18.jpeg';
+import i19 from '../public/gallery/19.jpeg';
 import i2 from '../public/gallery/2.jpeg';
 import i3 from '../public/gallery/3.jpeg';
 import i4 from '../public/gallery/4.jpeg';
 import i5 from '../public/gallery/5.jpeg';
 import i6 from '../public/gallery/6.jpeg';
 import i7 from '../public/gallery/7.jpeg';
+import i8 from '../public/gallery/8.jpeg';
+import i9 from '../public/gallery/9.jpeg';
 
 const Section = styled.section`
   width: 100vw;
@@ -28,12 +39,15 @@ const Carousel = styled.section`
 `;
 
 const CarouselImage = styled.div`
-  width: 50vw;
+  min-width: 45vw;
+  max-width: 100vw;
+  width: 75vh;
   height: 100vh;
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
   position: relative;
+  margin: 0 2.5vw;
 `;
 
 const Title = styled.h1`
@@ -147,6 +161,94 @@ export default function Home() {
           <CarouselImage>
             <Image
               src={i7}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i8}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i9}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i11}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i12}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i13}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i14}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i15}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i16}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i17}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i18}
+              layout="fill"
+              objectFit="contain"
+              placeholder="blur"
+            />
+          </CarouselImage>
+          <CarouselImage>
+            <Image
+              src={i19}
               layout="fill"
               objectFit="contain"
               placeholder="blur"
