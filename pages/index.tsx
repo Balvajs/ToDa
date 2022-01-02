@@ -1,6 +1,9 @@
+import csLocale from 'date-fns/locale/cs';
 import Head from 'next/head';
 import Image from 'next/image';
-import styled, { keyframes } from 'styled-components';
+import { useCallback, useEffect, useState } from 'react';
+import { DateRange, DayPicker } from 'react-day-picker';
+import styled, { css, keyframes } from 'styled-components';
 
 import { device } from '../lib/breakpoints';
 import cover from '../public/cover.webp';
@@ -23,6 +26,8 @@ import i7 from '../public/gallery/7.jpeg';
 import i8 from '../public/gallery/8.jpeg';
 import i9 from '../public/gallery/9.jpeg';
 
+import 'react-day-picker/style.css';
+
 const gallery = [
   i1,
   i3,
@@ -44,15 +49,27 @@ const gallery = [
   i22,
 ];
 
-const Section = styled.section`
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Section = styled.section<{ background?: string }>`
   width: 100vw;
   height: 100vh;
   position: relative;
+  text-align: center;
+
+  ${({ background }) =>
+    background &&
+    css`
+      background: ${background};
+    `}
 `;
 
-const Carousel = styled.section`
-  min-width: 100vw;
-  height: 100vh;
+const Carousel = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   overflow-x: scroll;
@@ -62,7 +79,7 @@ const Carousel = styled.section`
 
 const CarouselImage = styled.div`
   min-width: 45vw;
-  max-width: 100vw;
+  max-width: 95vw;
   width: 75vh;
   height: 133.333vw;
   max-height: 100vh;
@@ -85,7 +102,7 @@ const appear = keyframes`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.h1<{ canAppear: boolean }>`
   position: absolute;
   left: 50%;
   bottom: 50vh;
@@ -96,10 +113,15 @@ const Title = styled.h1`
   text-align: right;
   transform: translateX(-50%) translateY(-20%);
   opacity: 0;
-  animation: ${appear} 2s ease-out;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-delay: 1s;
+
+  ${({ canAppear }) =>
+    canAppear &&
+    css`
+      animation: ${appear} 2s ease-out;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      animation-delay: 1s;
+    `}
 
   @media ${device.md.min} {
     bottom: 45vh;
@@ -126,7 +148,29 @@ const Overlay = styled.div`
   z-index: 1;
 `;
 
+const today = new Date();
+
 export default function Home() {
+  const [range, setRange] = useState<DateRange>();
+  const [coverImageLoaded, setCoverImageLoaded] = useState(false);
+  const [reservedDays, setReservedDays] = useState<
+    Array<{ start: string; end: string }>
+  >([]);
+
+  const handleCoverImageLoadingComplete = useCallback(
+    () => setCoverImageLoaded(true),
+    [],
+  );
+
+  useEffect(() => {
+    fetch('/api/calendar', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then(setReservedDays);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -135,7 +179,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main style={{ height: '200vh' }}>
+      <Main>
         <Section>
           <Overlay />
           <Image
@@ -143,27 +187,52 @@ export default function Home() {
             layout="fill"
             objectFit="cover"
             priority
-            quality={100}
+            onLoadingComplete={handleCoverImageLoadingComplete}
           />
-          <Title>
+          <Title canAppear={coverImageLoaded}>
             Apartmán
             <br />
             ToDa
           </Title>
         </Section>
-        <Carousel>
-          {gallery.map((src) => (
-            <CarouselImage key={src.src}>
-              <Image
-                src={src}
-                layout="fill"
-                objectFit="contain"
-                placeholder="blur"
-              />
-            </CarouselImage>
-          ))}
-        </Carousel>
-      </main>
+        <Section>
+          <Carousel>
+            {gallery.map((src) => (
+              <CarouselImage key={src.src}>
+                <Image
+                  src={src}
+                  layout="fill"
+                  objectFit="contain"
+                  placeholder="blur"
+                />
+              </CarouselImage>
+            ))}
+          </Carousel>
+        </Section>
+        {/* <Section background="#303030">
+          <h2>Ceník</h2>
+          <h4>Zimní sezóna (1.1. - 31.3.)</h4>
+          <p>99999$/noc</p>
+          <h4>Létní sezóna (30.6. - 30.8.)</h4>
+          <p>99999$/noc</p>
+          <h4>Mimo sezónu</h4>
+          <p>99999$/noc</p>
+        </Section>
+        <Section>
+          <h2>Rezervace</h2>
+          <DayPicker
+            locale={csLocale}
+            mode="range"
+            defaultMonth={today}
+            selected={range}
+            onSelect={setRange}
+            disabled={reservedDays.map(({ start, end }) => ({
+              from: new Date(start),
+              to: new Date(end),
+            }))}
+          />
+        </Section> */}
+      </Main>
     </div>
   );
 }
