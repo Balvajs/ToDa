@@ -209,7 +209,7 @@ export default function Home() {
             ))}
           </Carousel>
         </Section>
-        {/* <Section background="#303030">
+        <Section background="#303030">
           <h2>Ceník</h2>
           <h4>Zimní sezóna (1.1. - 31.3.)</h4>
           <p>99999$/noc</p>
@@ -231,7 +231,7 @@ export default function Home() {
               to: new Date(end),
             }))}
           />
-        </Section> */}
+        </Section>
       </Main>
     </div>
   );
