@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   html, body {
     width: 100vw;
-    min-height: 100vh;
+    height: 100%;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,6 +13,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     color: white;
     background-color: #222;
+  }
+
+  #__next {
+    height: 100%;
   }
 `;
 

@@ -50,20 +50,25 @@ const gallery = [
 ];
 
 const Main = styled.main`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 `;
 
 const Section = styled.section<{ background?: string }>`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: relative;
   text-align: center;
+  scroll-snap-align: start;
+  flex-shrink: 0;
 
   ${({ background }) =>
     background &&
     css`
-      background: ${background};
+      background-color: ${background};
     `}
 `;
 
@@ -75,6 +80,7 @@ const Carousel = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
 `;
 
 const CarouselImage = styled.div`
@@ -82,12 +88,13 @@ const CarouselImage = styled.div`
   max-width: 95vw;
   width: 75vh;
   height: calc(133.333vw - 6.666vw);
-  max-height: 100vh;
+  max-height: 100%;
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
   position: relative;
   margin: 0 2.5vw;
+  scroll-snap-align: center;
 `;
 
 const appear = keyframes`
@@ -105,7 +112,7 @@ const appear = keyframes`
 const Title = styled.h1<{ canAppear: boolean }>`
   position: absolute;
   left: 50%;
-  bottom: 50vh;
+  bottom: 50%;
   font-weight: 300;
   font-size: 2.8rem;
   margin: 0;
@@ -124,7 +131,7 @@ const Title = styled.h1<{ canAppear: boolean }>`
     `}
 
   @media ${device.md.min} {
-    bottom: 45vh;
+    bottom: 45%;
     font-size: 4rem;
   }
 
@@ -133,7 +140,7 @@ const Title = styled.h1<{ canAppear: boolean }>`
   }
 
   @media ${device.xxl.min} {
-    bottom: 45vh;
+    bottom: 45%;
   }
 `;
 
@@ -172,7 +179,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <>
       <Head>
         <title>ToDa</title>
         <meta name="description" content="Apartman ToDa" />
@@ -235,6 +242,6 @@ export default function Home() {
           />
         </Section>
       </Main>
-    </div>
+    </>
   );
 }
