@@ -6,7 +6,7 @@ import { DateRange, DayPicker } from 'react-day-picker';
 import styled, { css, keyframes } from 'styled-components';
 
 import { device } from '../lib/breakpoints';
-import cover from '../public/cover.webp';
+import cover from '../public/cover.jpeg';
 import i1 from '../public/gallery/1.jpeg';
 import i10 from '../public/gallery/10.jpeg';
 import i11 from '../public/gallery/11.jpeg';
@@ -188,6 +188,7 @@ export default function Home() {
             objectFit="cover"
             priority
             onLoadingComplete={handleCoverImageLoadingComplete}
+            quality={50}
           />
           <Title canAppear={coverImageLoaded}>
             Apartmán
@@ -204,6 +205,7 @@ export default function Home() {
                   layout="fill"
                   objectFit="contain"
                   placeholder="blur"
+                  lazyBoundary="-1px"
                 />
               </CarouselImage>
             ))}

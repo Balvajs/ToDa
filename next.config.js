@@ -4,4 +4,7 @@ module.exports = {
     // Enables the styled-components SWC transform
     styledComponents: true,
   },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
 };
