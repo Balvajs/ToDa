@@ -81,7 +81,7 @@ const CarouselImage = styled.div`
   min-width: 45vw;
   max-width: 95vw;
   width: 75vh;
-  height: 133.333vw;
+  height: calc(133.333vw - 6.666vw);
   max-height: 100vh;
   flex-basis: auto;
   flex-grow: 0;
