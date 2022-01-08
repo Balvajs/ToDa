@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
@@ -18,13 +19,19 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <GlobalStyle />
       <Component {...pageProps} />
-    </>
+    </ThemeProvider>
   );
 }
 
