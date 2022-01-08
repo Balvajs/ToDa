@@ -1,36 +1,85 @@
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import { Rating, Typography } from '@mui/material';
+import { Rating, Typography, createTheme, ThemeProvider } from '@mui/material';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import csLocale from 'date-fns/locale/cs';
-import { useEffect, useState } from 'react';
-import { DateRange, DayPicker } from 'react-day-picker';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 
+import { device } from '../lib/breakpoints';
+
+import { DatePicker } from './date-picker';
+
 import 'react-day-picker/style.css';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const Container = styled.div`
   width: 100%;
   padding: 0 10px;
-  height: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media ${device.md.min} {
+    height: 90%;
+  }
 `;
 
-const FormCarousel = styled.div`
+const Grower = styled.div`
+  flex-grow: 1;
+
+  @media ${device.md.min} {
+    display: none;
+  }
+`;
+
+const FormCarousel = styled.form`
+  width: 100vw;
   display: flex;
   align-items: flex-start;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  flex-grow: 1;
+
+  @media ${device.md.min} {
+    scroll-snap-type: none;
+    justify-content: center;
+    flex-grow: 0;
+  }
+`;
+
+const FormSlide = styled.div`
+  width: 100vw;
+  padding: 0 1rem;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+
+  @media ${device.md.min} {
+    width: auto;
+  }
 `;
 
 const Title = styled.h2`
   font-size: 2.5rem;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+
+  @media ${device.md.min} {
+    margin-bottom: 3rem;
+  }
 `;
 
-const Form = styled.div`
+const PersonalDataForm = styled.div`
   width: 100%;
   max-width: 400px;
   flex-direction: column;
@@ -64,7 +113,9 @@ const StyledRating = styled(Rating)({
   },
 });
 
-const today = new Date();
+const SubmitButton = styled(Button)`
+  margin-top: 2rem;
+`;
 
 const getPersonsString = (persons: number) => {
   if (persons === 1) {
@@ -76,88 +127,145 @@ const getPersonsString = (persons: number) => {
   return 'osob';
 };
 
-export function Reservation() {
-  const [range, setRange] = useState<DateRange>();
-  const [reservedDays, setReservedDays] = useState<
-    Array<{ start: string; end: string }>
-  >([]);
-  const [persons, setPersons] = useState(2);
-  const [personsHover, setPersonsHover] = useState(-1);
-  const personsDisplay = personsHover !== -1 ? personsHover : persons;
+export type Values = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  persons: number;
+  note: string;
+};
 
-  useEffect(() => {
-    fetch('/api/calendar', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then(setReservedDays);
-  }, []);
+export function Reservation() {
+  const [personsHover, setPersonsHover] = useState(-1);
+
+  const { control, handleSubmit, getValues } = useForm<Values>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      persons: 2,
+      note: '',
+    },
+  });
+
+  const onSubmit = (values: Values) => console.log(values);
+
+  const personsDisplay =
+    personsHover !== -1 ? personsHover : getValues('persons');
 
   return (
-    <Container>
-      <Title>Rezervace</Title>
-      <FormCarousel>
-        <DayPicker
-          locale={csLocale}
-          mode="range"
-          defaultMonth={today}
-          selected={range}
-          onSelect={setRange}
-          disabled={reservedDays.map(({ start, end }) => ({
-            from: new Date(start),
-            to: new Date(end),
-          }))}
-        />
-        <Form>
-          <FormRow>
-            <TextField variant="standard" label="Jméno" fullWidth required />
-            <RowSpacer />
-            <TextField variant="standard" label="Příjmení" fullWidth required />
-          </FormRow>
-          <FormRow>
-            <TextField
-              variant="standard"
-              type="email"
-              label="Email"
-              fullWidth
-              required
-            />
-          </FormRow>
-          <FormRow marginTop>
-            <StyledRating
-              name="customized-color"
-              defaultValue={2}
-              getLabelText={(value) =>
-                `${value} Heart${value !== 1 ? 's' : ''}`
-              }
-              max={7}
-              icon={<PersonIcon fontSize="inherit" />}
-              emptyIcon={<PersonOutlineOutlinedIcon fontSize="inherit" />}
-              onChange={(_event, newValue) => {
-                if (newValue) {
-                  setPersons(newValue);
-                }
-              }}
-              onChangeActive={(_event, newHover) => {
-                setPersonsHover(newHover);
-              }}
-            />
-            <Typography marginLeft="1rem">
-              {personsDisplay} {getPersonsString(personsDisplay)}
-            </Typography>
-          </FormRow>
-          <FormRow>
-            <TextField
-              variant="standard"
-              multiline
-              label="Poznámka"
-              maxRows={4}
-              fullWidth
-            />
-          </FormRow>
-        </Form>
-      </FormCarousel>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container>
+        <Grower />
+        <Title>Rezervace</Title>
+        <FormCarousel onSubmit={handleSubmit(onSubmit)}>
+          <FormSlide>
+            <DatePicker />
+          </FormSlide>
+          <FormSlide>
+            <PersonalDataForm>
+              <FormRow>
+                <Controller
+                  control={control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      variant="standard"
+                      label="Jméno"
+                      fullWidth
+                      required
+                      autoComplete="given-name"
+                    />
+                  )}
+                />
+                <RowSpacer />
+                <Controller
+                  control={control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      variant="standard"
+                      label="Příjmení"
+                      fullWidth
+                      required
+                      autoComplete="family-name"
+                    />
+                  )}
+                />
+              </FormRow>
+              <FormRow>
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      variant="standard"
+                      type="email"
+                      label="Email"
+                      fullWidth
+                      required
+                      autoComplete="email"
+                    />
+                  )}
+                />
+              </FormRow>
+              <FormRow marginTop>
+                <Controller
+                  control={control}
+                  name="persons"
+                  render={({ field }) => (
+                    <StyledRating
+                      {...field}
+                      defaultValue={2}
+                      getLabelText={(value) =>
+                        `${value} ${getPersonsString(value)}`
+                      }
+                      max={7}
+                      icon={<PersonIcon fontSize="inherit" />}
+                      emptyIcon={
+                        <PersonOutlineOutlinedIcon fontSize="inherit" />
+                      }
+                      onChange={(_event, newValue) => {
+                        if (newValue) {
+                          field.onChange(newValue);
+                        }
+                      }}
+                      onChangeActive={(_event, newHover) => {
+                        setPersonsHover(newHover);
+                      }}
+                    />
+                  )}
+                />
+                <Typography marginLeft="1rem">
+                  {personsDisplay} {getPersonsString(personsDisplay)}
+                </Typography>
+              </FormRow>
+              <FormRow>
+                <Controller
+                  control={control}
+                  name="note"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      variant="standard"
+                      multiline
+                      label="Poznámka"
+                      maxRows={4}
+                      fullWidth
+                    />
+                  )}
+                />
+              </FormRow>
+              <SubmitButton type="submit" fullWidth>
+                Odeslat
+              </SubmitButton>
+            </PersonalDataForm>
+          </FormSlide>
+        </FormCarousel>
+      </Container>
+    </ThemeProvider>
   );
 }
