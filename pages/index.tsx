@@ -1,10 +1,10 @@
-import csLocale from 'date-fns/locale/cs';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
-import { DateRange, DayPicker } from 'react-day-picker';
+import { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
+import { Pricing } from '../components/pricing';
+import { Reservation } from '../components/reservation';
 import { device } from '../lib/breakpoints';
 import cover from '../public/cover.jpeg';
 import i1 from '../public/gallery/1.jpeg';
@@ -25,8 +25,6 @@ import i4 from '../public/gallery/4.jpeg';
 import i7 from '../public/gallery/7.jpeg';
 import i8 from '../public/gallery/8.jpeg';
 import i9 from '../public/gallery/9.jpeg';
-
-import 'react-day-picker/style.css';
 
 const gallery = [
   i1,
@@ -155,28 +153,13 @@ const Overlay = styled.div`
   z-index: 1;
 `;
 
-const today = new Date();
-
 export default function Home() {
-  const [range, setRange] = useState<DateRange>();
   const [coverImageLoaded, setCoverImageLoaded] = useState(false);
-  const [reservedDays, setReservedDays] = useState<
-    Array<{ start: string; end: string }>
-  >([]);
 
   const handleCoverImageLoadingComplete = useCallback(
     () => setCoverImageLoaded(true),
     [],
   );
-
-  useEffect(() => {
-    fetch('/api/calendar', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then(setReservedDays);
-  }, []);
 
   return (
     <>
@@ -219,27 +202,10 @@ export default function Home() {
           </Carousel>
         </Section>
         <Section background="#303030">
-          <h2>Ceník</h2>
-          <h4>Zimní sezóna (1.1. - 31.3.)</h4>
-          <p>99999$/noc</p>
-          <h4>Létní sezóna (30.6. - 30.8.)</h4>
-          <p>99999$/noc</p>
-          <h4>Mimo sezónu</h4>
-          <p>99999$/noc</p>
+          <Pricing />
         </Section>
         <Section>
-          <h2>Rezervace</h2>
-          <DayPicker
-            locale={csLocale}
-            mode="range"
-            defaultMonth={today}
-            selected={range}
-            onSelect={setRange}
-            disabled={reservedDays.map(({ start, end }) => ({
-              from: new Date(start),
-              to: new Date(end),
-            }))}
-          />
+          <Reservation />
         </Section>
       </Main>
     </>
