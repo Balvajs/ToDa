@@ -153,6 +153,8 @@ const _bookTermMutation = gql`
   }
 `;
 
+console.log(_bookTermMutation);
+
 export function Reservation() {
   const [personsHover, setPersonsHover] = useState(-1);
 
