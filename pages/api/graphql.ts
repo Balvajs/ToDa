@@ -2,8 +2,8 @@ import { ApolloServer } from 'apollo-server-micro';
 import { EmailAddressResolver, DateTimeResolver } from 'graphql-scalars';
 import { NextApiHandler } from 'next';
 
-import { Resolvers } from '../../api/generated/types';
-import schema from '../../api/schema';
+import { Resolvers } from '../../lib/api/generated/types';
+import schema from '../../lib/api/schema';
 
 const resolvers: Resolvers = {
   DateTime: DateTimeResolver,

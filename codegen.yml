@@ -1,5 +1,5 @@
 overwrite: true
-schema: api/schema.ts
+schema: lib/api/schema.ts
 require:
   - ts-node/register
 hooks:
@@ -17,7 +17,7 @@ generates:
     preset: near-operation-file
     presetConfig:
       extension: .generated.ts
-      baseTypesPath: ../api/generated/types.ts
+      baseTypesPath: ../lib/api/generated/types.ts
     plugins:
       - add:
           content: '/* eslint-disable */'
