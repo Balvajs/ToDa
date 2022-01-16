@@ -3,6 +3,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { Rating, Typography, createTheme, ThemeProvider } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { gql } from 'apollo-server-micro';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
@@ -10,6 +11,7 @@ import styled, { css } from 'styled-components';
 import { device } from '../lib/breakpoints';
 
 import { DatePicker } from './date-picker';
+import { useBookTermMutation } from './reservation.generated';
 
 import 'react-day-picker/style.css';
 
@@ -131,27 +133,54 @@ export type Values = {
   firstName: string;
   lastName: string;
   email: string;
-  persons: number;
+  numberOfPersons: number;
   note: string;
 };
 
+// eslint-disable-next-line no-underscore-dangle, no-unused-vars
+const _bookTermMutation = gql`
+  mutation BookTerm($input: BookTermInput!) {
+    bookTerm(input: $input) {
+      ... on BookTermSuccess {
+        booking {
+          term {
+            to
+            from
+          }
+        }
+      }
+    }
+  }
+`;
+
 export function Reservation() {
   const [personsHover, setPersonsHover] = useState(-1);
+
+  const [bookTerm] = useBookTermMutation();
 
   const { control, handleSubmit, getValues } = useForm<Values>({
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
-      persons: 2,
+      numberOfPersons: 2,
       note: '',
     },
   });
 
-  const onSubmit = (values: Values) => console.log(values);
+  const onSubmit = (values: Values) =>
+    bookTerm({
+      variables: {
+        input: {
+          from: new Date().toISOString(),
+          to: new Date().toISOString(),
+          ...values,
+        },
+      },
+    });
 
   const personsDisplay =
-    personsHover !== -1 ? personsHover : getValues('persons');
+    personsHover !== -1 ? personsHover : getValues('numberOfPersons');
 
   return (
     <ThemeProvider theme={theme}>
@@ -215,7 +244,7 @@ export function Reservation() {
               <FormRow marginTop>
                 <Controller
                   control={control}
-                  name="persons"
+                  name="numberOfPersons"
                   render={({ field }) => (
                     <StyledRating
                       {...field}

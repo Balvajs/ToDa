@@ -1,0 +1,34 @@
+overwrite: true
+schema: api/schema.ts
+require:
+  - ts-node/register
+hooks:
+  afterOneFileWrite:
+    - prettier --write
+config:
+  useTypeImports: true
+  scalars:
+    DateTime: string
+    EmailAddress: string
+generates:
+  components/:
+    documents:
+      - components/**/*.tsx
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: ../api/generated/types.ts
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript-operations
+      - typescript-react-apollo
+  api/generated/types.ts:
+    config:
+      useIndexSignature: true
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript:
+          strictScalars: true
+      - typescript-resolvers
