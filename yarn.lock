@@ -6534,6 +6534,7 @@ __metadata:
     react-day-picker: next
     react-dom: 17.0.2
     react-hook-form: 7.23.0
+    react-intersection-observer: 8.33.1
     react-is: 17.0.2
     styled-components: 5.3.3
     ts-node: 10.4.0
@@ -7265,6 +7266,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17
   checksum: 8b63d89f2ab147799ce40f98951c0db57c42f831bce38d9927f5358f57615f4102d02b678fd38d0dd93bac00d2e5277e1ea3df17562aa853d80becfa15583222
+  languageName: node
+  linkType: hard
+
+"react-intersection-observer@npm:8.33.1":
+  version: 8.33.1
+  resolution: "react-intersection-observer@npm:8.33.1"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
+  checksum: 5feb0df01dd64f1fa0b8300fb4fc12db95350c1ae2514f66f0652371f65e5501758a662746000dc2584d24dcce07139590e5375d6c9920a60b282af83468d0c4
   languageName: node
   linkType: hard
 
