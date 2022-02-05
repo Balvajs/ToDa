@@ -105,8 +105,7 @@ export type Values = {
   note: string;
 };
 
-// eslint-disable-next-line no-underscore-dangle, no-unused-vars
-const _bookTermMutation = gql`
+const bookTermMutation = gql`
   mutation BookTerm($input: BookTermInput!) {
     bookTerm(input: $input) {
       ... on BookTermSuccess {
@@ -120,6 +119,8 @@ const _bookTermMutation = gql`
     }
   }
 `;
+// eslint-disable-next-line no-unused-expressions
+bookTermMutation;
 
 function ReservationForm() {
   const [personsHover, setPersonsHover] = useState(-1);
