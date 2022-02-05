@@ -45,6 +45,7 @@ export default function Home() {
         <Section>
           <Cover />
         </Section>
+
         <Section>
           <InView rootMargin="-1px" threshold={0}>
             {({ inView, ref }) => (
@@ -52,6 +53,7 @@ export default function Home() {
             )}
           </InView>
         </Section>
+
         <Section background="#303030">
           <Pricing />
         </Section>
