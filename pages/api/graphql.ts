@@ -13,8 +13,6 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     bookTerm: (_, { input }) => {
-      console.log(input);
-
       return {
         __typename: 'BookTermSuccess',
         booking: {
