@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 import { Cover } from '../components/cover';
 import { Pricing } from '../components/pricing';
 import { Reservation } from '../components/reservation';
+import ogCover from '../public/og-cover.jpeg';
 
 const Gallery = dynamic(() => import('../components/gallery'));
 
@@ -39,6 +40,14 @@ export default function Home() {
         <title>ToDa</title>
         <meta name="description" content="Apartman ToDa" />
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:image" content={ogCover.src} />
+        <meta property="og:title" content="Apartmán ToDa" />
+        <meta
+          property="og:description"
+          content="Apartmán v Příchovicích v Jizerských horách"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
       </Head>
 
       <Main>
