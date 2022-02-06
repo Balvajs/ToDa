@@ -34,7 +34,13 @@ const DayPickerGlobalStyle = createGlobalStyle`
 
 const today = new Date();
 
-export function DatePicker() {
+type Props = {
+  // eslint-disable-next-line no-unused-vars
+  onDateRangeChange: (dateRange: DateRange | undefined) => void;
+  disabled: boolean;
+};
+
+export function DatePicker({ onDateRangeChange, disabled }: Props) {
   const [range, setRange] = useState<DateRange>();
   const [reservedDays, setReservedDays] = useState<
     Array<{ from: Date; to: Date }>
@@ -56,10 +62,22 @@ export function DatePicker() {
       );
   }, []);
 
+  const handleDateRangeChange = useCallback(
+    (dateRange: DateRange | undefined) => {
+      setRange(dateRange);
+      onDateRangeChange(dateRange);
+    },
+    [onDateRangeChange],
+  );
+
   const handleSelect = useCallback<SelectRangeEventHandler>(
     (newRange, selectedDay) => {
+      if (disabled) {
+        return;
+      }
+
       if (!newRange || !newRange.from || !newRange.to) {
-        return setRange(newRange);
+        return handleDateRangeChange(newRange);
       }
 
       const newFrom = newRange.from;
@@ -71,12 +89,12 @@ export function DatePicker() {
       );
 
       if (isIntersectingReserved || newFrom === newTo) {
-        return setRange({ from: selectedDay });
+        return handleDateRangeChange({ from: selectedDay });
       }
 
-      setRange(newRange);
+      handleDateRangeChange(newRange);
     },
-    [reservedDays],
+    [reservedDays, disabled],
   );
 
   return (

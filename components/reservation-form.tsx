@@ -1,10 +1,17 @@
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import { Rating, Typography, createTheme, ThemeProvider } from '@mui/material';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Rating,
+  Typography,
+  createTheme,
+  ThemeProvider,
+  Button,
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { gql } from 'apollo-server-micro';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import { Controller, useForm } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 
@@ -21,11 +28,18 @@ const theme = createTheme({
   },
 });
 
-const FormCarousel = styled.form`
+const FormCarousel = styled.form<{ scrollEnabled: boolean }>`
   width: 100vw;
   display: flex;
   align-items: flex-start;
-  overflow-x: scroll;
+  ${({ scrollEnabled }) =>
+    scrollEnabled
+      ? css`
+          overflow-x: scroll;
+        `
+      : css`
+          overflow-x: hidden;
+        `}
   scroll-snap-type: x mandatory;
   flex-grow: 1;
 
@@ -36,13 +50,22 @@ const FormCarousel = styled.form`
   }
 `;
 
+const ContinueButton = styled(Button)`
+  @media ${device.md.min} {
+    display: none;
+  }
+`;
+
 const FormSlide = styled.div`
   width: 100vw;
+  min-height: 425px;
   padding: 0 1rem;
   scroll-snap-align: center;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 
   @media ${device.md.min} {
     width: auto;
@@ -83,8 +106,17 @@ const StyledRating = styled(Rating)({
   },
 });
 
-const SubmitButton = styled(Button)`
+const SubmitButton = styled(LoadingButton)`
   margin-top: 2rem;
+`;
+
+const ErrorMessage = styled.p`
+  max-width: 350px;
+  color: ${theme.palette.error.main};
+`;
+
+const SuccessMessage = styled.p`
+  color: ${theme.palette.success.main};
 `;
 
 const getPersonsString = (persons: number) => {
@@ -123,9 +155,12 @@ const bookTermMutation = gql`
 bookTermMutation;
 
 function ReservationForm() {
+  const [dateRange, setDateRange] = useState<DateRange>();
   const [personsHover, setPersonsHover] = useState(-1);
+  const [error, setError] = useState();
+  const secondStepRef = useRef<HTMLDivElement>(null);
 
-  const [bookTerm] = useBookTermMutation();
+  const [bookTerm, { loading, data, reset }] = useBookTermMutation();
 
   const { control, handleSubmit, getValues } = useForm<Values>({
     defaultValues: {
@@ -137,27 +172,50 @@ function ReservationForm() {
     },
   });
 
-  const onSubmit = (values: Values) =>
-    bookTerm({
-      variables: {
-        input: {
-          from: new Date().toISOString(),
-          to: new Date().toISOString(),
-          ...values,
-        },
-      },
-    });
+  const onSubmit = useCallback(
+    (values: Values) => {
+      if (dateRange?.from && dateRange.to) {
+        setError(undefined);
+
+        return bookTerm({
+          variables: {
+            input: {
+              from: dateRange.from.toISOString(),
+              to: dateRange.to.toISOString(),
+              ...values,
+            },
+          },
+        }).catch((newError) => {
+          reset();
+          setError(newError);
+        });
+      }
+    },
+    [dateRange, reset],
+  );
 
   const personsDisplay =
     personsHover !== -1 ? personsHover : getValues('numberOfPersons');
 
   return (
     <ThemeProvider theme={theme}>
-      <FormCarousel onSubmit={handleSubmit(onSubmit)}>
+      <FormCarousel
+        onSubmit={handleSubmit(onSubmit)}
+        scrollEnabled={!!dateRange?.from && !!dateRange.to}
+      >
         <FormSlide>
-          <DatePicker />
+          <DatePicker onDateRangeChange={setDateRange} disabled={!!data} />
+          <ContinueButton
+            onClick={() =>
+              secondStepRef.current?.scrollIntoView({ behavior: 'smooth' })
+            }
+            fullWidth
+            disabled={!dateRange?.from || !dateRange.to}
+          >
+            Pokračovat
+          </ContinueButton>
         </FormSlide>
-        <FormSlide>
+        <FormSlide ref={secondStepRef}>
           <PersonalDataForm>
             <FormRow>
               <Controller
@@ -171,6 +229,7 @@ function ReservationForm() {
                     fullWidth
                     required
                     autoComplete="given-name"
+                    disabled={!!data}
                   />
                 )}
               />
@@ -186,6 +245,7 @@ function ReservationForm() {
                     fullWidth
                     required
                     autoComplete="family-name"
+                    disabled={!!data}
                   />
                 )}
               />
@@ -203,6 +263,7 @@ function ReservationForm() {
                     fullWidth
                     required
                     autoComplete="email"
+                    disabled={!!data}
                   />
                 )}
               />
@@ -229,6 +290,7 @@ function ReservationForm() {
                     onChangeActive={(_event, newHover) => {
                       setPersonsHover(newHover);
                     }}
+                    disabled={!!data}
                   />
                 )}
               />
@@ -248,13 +310,31 @@ function ReservationForm() {
                     label="Poznámka"
                     maxRows={4}
                     fullWidth
+                    disabled={!!data}
                   />
                 )}
               />
             </FormRow>
-            <SubmitButton type="submit" fullWidth>
-              Odeslat
-            </SubmitButton>
+            {!data && (
+              <SubmitButton type="submit" fullWidth loading={loading}>
+                Odeslat
+              </SubmitButton>
+            )}
+            {error && (
+              <ErrorMessage>
+                Něco se pokazilo.
+                <br />
+                Zkuste to znovu, nebo nás kontaktujte na{' '}
+                {process.env.NEXT_PUBLIC_MAIL_RECEIVER}
+              </ErrorMessage>
+            )}
+            {data && (
+              <SuccessMessage>
+                Rezervace úspěšně odelána.
+                <br />
+                Brzy se Vám ozveme.
+              </SuccessMessage>
+            )}
           </PersonalDataForm>
         </FormSlide>
       </FormCarousel>
