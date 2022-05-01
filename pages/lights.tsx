@@ -18,7 +18,7 @@ const connectToApi = ({
       body: Record<string, unknown>;
     }) =>
   fetch(
-    `http://${process.env.NEXT_PUBLIC_LIGHTS_HOST}/api/${
+    `https://${process.env.NEXT_PUBLIC_LIGHTS_HOST}/api/${
       process.env.NEXT_PUBLIC_LIGHTS_USERNAME
     }/${resource !== 'none' ? resource : ''}${
       'id' in args
