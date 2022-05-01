@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'rooks';
 
@@ -160,6 +161,12 @@ export default function Lights() {
 
   return (
     <div style={{ maxWidth: '90vw', width: '450px', margin: 'auto' }}>
+      <Head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+      </Head>
       {loading && 'Loading...'}
       {!loading && lights && groups && (
         <>
