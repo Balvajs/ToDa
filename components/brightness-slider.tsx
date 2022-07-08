@@ -14,7 +14,7 @@ const BrightSlider = styled(Slider)(() => {
       display: 'none',
     },
   };
-});
+}) as typeof Slider;
 
 type Props = {
   initialValue: number;

@@ -1,13 +1,13 @@
 import { Typography } from '@mui/material';
 import csLocale from 'date-fns/locale/cs';
 import dayjs from 'dayjs';
-import { useState, useEffect, useCallback, ComponentClass } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   DateRange,
   DayPicker,
   SelectRangeEventHandler,
 } from 'react-day-picker';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 
 const Container = styled.div`
   min-width: 312px;
@@ -16,21 +16,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-const DayPickerGlobalStyle = createGlobalStyle`
-  .rdp-button:hover:not([disabled]),
-  .rdp-button:active:not([disabled]),
-  .rdp-button:focus:not([disabled]) {
-    background: none;
-    border-color: white;
-  }
-
-  .rdp-day_selected:not([disabled]),
-  .rdp-day_selected:hover:not([disabled]),
-  .rdp-day_selected:focus:not([disabled]) {
-      background-color: #5c5c5c;
-  }
-` as ComponentClass;
 
 const today = new Date();
 
@@ -99,7 +84,6 @@ export function DatePicker({ onDateRangeChange, disabled }: Props) {
 
   return (
     <Container>
-      <DayPickerGlobalStyle />
       <Typography>
         {!range?.from && 'Vyberte první den pobytu'}
         {range?.from && !range.to && 'Vyberte poslední den pobytu'}

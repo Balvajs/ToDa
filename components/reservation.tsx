@@ -1,8 +1,8 @@
 import { CircularProgress } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+import { ComponentClass, Suspense } from 'react';
 import { InView } from 'react-intersection-observer';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import { device } from '../lib/breakpoints';
 
@@ -42,12 +42,28 @@ const Title = styled.h2`
   }
 `;
 
+const DayPickerGlobalStyle = createGlobalStyle`
+  .rdp-button:hover:not([disabled]),
+  .rdp-button:active:not([disabled]),
+  .rdp-button:focus:not([disabled]) {
+    background: none !important;
+    border-color: white !important;
+  }
+
+  .rdp-day_selected:not([disabled]),
+  .rdp-day_selected:hover:not([disabled]),
+  .rdp-day_selected:focus:not([disabled]) {
+      background-color: #5c5c5c !important;
+  }
+` as ComponentClass;
+
 export function Reservation() {
   return (
     <InView rootMargin="100%" threshold={0}>
       {({ inView, ref }) => (
         <Container ref={ref}>
           <>
+            <DayPickerGlobalStyle />
             <Grower />
             <Title>Rezervace</Title>
             <Suspense fallback={<CircularProgress />}>
