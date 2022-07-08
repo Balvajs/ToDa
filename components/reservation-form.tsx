@@ -20,7 +20,7 @@ import { device } from '../lib/breakpoints';
 import { DatePicker } from './date-picker';
 import { useBookTermMutation } from './reservation.generated';
 
-import 'react-day-picker/style.css';
+import 'react-day-picker/dist/style.css';
 
 const theme = createTheme({
   palette: {

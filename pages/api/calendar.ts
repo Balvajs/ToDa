@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import ical from 'node-ical';
+import ical, { CalendarComponent, VEvent } from 'node-ical';
 
 declare const process: {
   env: {
@@ -7,12 +7,17 @@ declare const process: {
   };
 };
 
+const isVEvent = (
+  calendarComponent: CalendarComponent,
+): calendarComponent is VEvent => calendarComponent.type === 'VEVENT';
+
 const handler: NextApiHandler = async (_req, res) => {
   const content = await ical.async.fromURL(process.env.CALENDAR_URL);
 
   res.status(200).json(
     Object.values(content)
-      .filter(({ type, end }) => type === 'VEVENT' && end && end > new Date())
+      .filter(isVEvent)
+      .filter(({ end }) => end && end > new Date())
       .map(({ start, end }) => ({ start, end })),
   );
 };

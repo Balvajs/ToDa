@@ -33,6 +33,9 @@ const Section = styled.section<{ background?: string }>`
     `}
 `;
 
+const setUrlAnchor = (id?: string) =>
+  window.history.replaceState(null, '', id ? `/#${id}` : '/');
+
 export default function Home() {
   return (
     <>
@@ -52,25 +55,50 @@ export default function Home() {
       </Head>
 
       <Main>
-        <Section>
-          <Cover />
-        </Section>
+        <InView threshold={1} onChange={(inView) => inView && setUrlAnchor()}>
+          {({ ref }) => (
+            <Section ref={ref}>
+              <Cover />
+            </Section>
+          )}
+        </InView>
 
-        <Section>
-          <InView rootMargin="-1px" threshold={0}>
-            {({ inView, ref }) => (
-              <Section ref={ref}>{inView && <Gallery />}</Section>
-            )}
-          </InView>
-        </Section>
+        <InView
+          threshold={1}
+          onChange={(inView) => inView && setUrlAnchor('gallery')}
+        >
+          {({ ref: sectionRef }) => (
+            <Section ref={sectionRef} id="gallery">
+              <InView rootMargin="-1px" threshold={0}>
+                {({ inView, ref }) => (
+                  <Section ref={ref}>{inView && <Gallery />}</Section>
+                )}
+              </InView>
+            </Section>
+          )}
+        </InView>
 
-        <Section background="#303030">
-          <Pricing />
-        </Section>
+        <InView
+          threshold={1}
+          onChange={(inView) => inView && setUrlAnchor('pricing')}
+        >
+          {({ ref }) => (
+            <Section ref={ref} background="#303030" id="pricing">
+              <Pricing />
+            </Section>
+          )}
+        </InView>
 
-        <Section>
-          <Reservation />
-        </Section>
+        <InView
+          threshold={1}
+          onChange={(inView) => inView && setUrlAnchor('reservation')}
+        >
+          {({ ref }) => (
+            <Section ref={ref} id="reservation">
+              <Reservation />
+            </Section>
+          )}
+        </InView>
       </Main>
     </>
   );

@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppProps } from 'next/app';
+import { ComponentClass } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -17,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     height: 100%;
   }
-`;
+` as ComponentClass;
 
 const client = new ApolloClient({
   uri: '/api/graphql',

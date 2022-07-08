@@ -1,12 +1,13 @@
 import { CircularProgress } from '@mui/material';
 import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { InView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 import { device } from '../lib/breakpoints';
 
 const ReservationForm = dynamic(() => import('./reservation-form'), {
-  loading: () => <CircularProgress />,
+  suspense: true,
 });
 
 const Container = styled.div`
@@ -46,9 +47,13 @@ export function Reservation() {
     <InView rootMargin="100%" threshold={0}>
       {({ inView, ref }) => (
         <Container ref={ref}>
-          <Grower />
-          <Title>Rezervace</Title>
-          {inView && <ReservationForm />}
+          <>
+            <Grower />
+            <Title>Rezervace</Title>
+            <Suspense fallback={<CircularProgress />}>
+              {inView && <ReservationForm />}
+            </Suspense>
+          </>
         </Container>
       )}
     </InView>

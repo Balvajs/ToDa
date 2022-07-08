@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import csLocale from 'date-fns/locale/cs';
 import dayjs from 'dayjs';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, ComponentClass } from 'react';
 import {
   DateRange,
   DayPicker,
@@ -30,7 +30,7 @@ const DayPickerGlobalStyle = createGlobalStyle`
   .rdp-day_selected:focus:not([disabled]) {
       background-color: #5c5c5c;
   }
-`;
+` as ComponentClass;
 
 const today = new Date();
 
