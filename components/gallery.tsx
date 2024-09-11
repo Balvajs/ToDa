@@ -1,7 +1,8 @@
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
 
 import jidelniStulDen from '../public/gallery/jidelni-stul-den.jpeg';
 import koupelna from '../public/gallery/koupelna.jpeg';
@@ -127,10 +128,12 @@ function Gallery() {
           <Image
             src={src}
             alt={alt}
-            layout="fill"
-            objectFit="contain"
             placeholder="blur"
-            lazyBoundary="100%"
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: 'contain',
+            }}
           />
         </CarouselImage>
       ))}

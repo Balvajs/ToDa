@@ -1,10 +1,10 @@
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
-import styled, { css } from 'styled-components';
 
 import { Cover } from '../components/cover';
-import { Pricing } from '../components/pricing';
 import { Reservation } from '../components/reservation';
 import ogCover from '../public/og-cover.jpeg';
 
@@ -74,17 +74,6 @@ export default function Home() {
                   <Section ref={ref}>{inView && <Gallery />}</Section>
                 )}
               </InView>
-            </Section>
-          )}
-        </InView>
-
-        <InView
-          threshold={1}
-          onChange={(inView) => inView && setUrlAnchor('pricing')}
-        >
-          {({ ref }) => (
-            <Section ref={ref} background="#303030" id="pricing">
-              <Pricing />
             </Section>
           )}
         </InView>

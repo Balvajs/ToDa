@@ -74,17 +74,21 @@ export function Cover() {
       <Overlay />
       <Image
         src={cover}
-        layout="fill"
-        objectFit="cover"
+        alt="Apartmán ToDa"
         priority
         //  onLoadingComplete={handleCoverImageLoadingComplete}
         quality={50}
+        fill
+        sizes="100vw"
+        style={{
+          objectFit: 'cover',
+        }}
       />
       {/* <Title canAppear={coverImageLoaded}>
-        Apartmán
-        <br />
-        ToDa
-      </Title> */}
+      Apartmán
+      <br />
+      ToDa
+    </Title> */}
     </>
   );
 }
