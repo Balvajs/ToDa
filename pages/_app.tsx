@@ -1,11 +1,12 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Global, css } from '@emotion/react';
+import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppProps } from 'next/app';
-import { ComponentClass } from 'react';
-import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-  html, body {
+const GlobalStyle = css`
+  html,
+  body {
     width: 100vw;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -18,20 +19,22 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     height: 100%;
   }
-` as ComponentClass;
+`;
 
 const client = new ApolloClient({
   uri: '/api/graphql',
   cache: new InMemoryCache(),
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, ...rest }: AppProps) {
   return (
-    <ApolloProvider client={client}>
-      <CssBaseline />
-      <GlobalStyle />
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <AppCacheProvider {...rest}>
+      <ApolloProvider client={client}>
+        <CssBaseline />
+        <Global styles={GlobalStyle} />
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </AppCacheProvider>
   );
 }
 

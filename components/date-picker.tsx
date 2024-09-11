@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import csLocale from 'date-fns/locale/cs';
 import dayjs from 'dayjs';
@@ -7,7 +8,6 @@ import {
   DayPicker,
   SelectRangeEventHandler,
 } from 'react-day-picker';
-import styled from 'styled-components';
 
 const Container = styled.div`
   min-width: 312px;
