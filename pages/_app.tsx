@@ -2,6 +2,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Global, css } from '@emotion/react';
 import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import CssBaseline from '@mui/material/CssBaseline';
+// eslint-disable-next-line import/no-unresolved
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProps } from 'next/app';
 
 const globalStyle = css`
@@ -33,6 +35,7 @@ function MyApp({ Component, pageProps, ...rest }: AppProps) {
         <CssBaseline />
         <Global styles={globalStyle} />
         <Component {...pageProps} />
+        <SpeedInsights />
       </ApolloProvider>
     </AppCacheProvider>
   );

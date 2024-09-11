@@ -23,6 +23,7 @@
     "@mui/material": "6.1.0",
     "@mui/material-nextjs": "6.1.0",
     "@sendinblue/client": "3.2.1",
+    "@vercel/speed-insights": "1.0.12",
     "apollo-server-micro": "3.9.0",
     "color-temperature": "0.2.7",
     "date-fns": "2.28.0",
@@ -74,6 +75,10 @@
   },
   "packageManager": "bun@1.1.23",
   "trustedDependencies": [
-    "core-js-pure"
+    "@apollo/protobufjs",
+    "@vercel/speed-insights",
+    "core-js-pure",
+    "esbuild",
+    "sharp"
   ]
 }
