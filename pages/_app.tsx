@@ -4,7 +4,7 @@ import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppProps } from 'next/app';
 
-const GlobalStyle = css`
+const globalStyle = css`
   html,
   body {
     width: 100vw;
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps, ...rest }: AppProps) {
     <AppCacheProvider {...rest}>
       <ApolloProvider client={client}>
         <CssBaseline />
-        <Global styles={GlobalStyle} />
+        <Global styles={globalStyle} />
         <Component {...pageProps} />
       </ApolloProvider>
     </AppCacheProvider>
